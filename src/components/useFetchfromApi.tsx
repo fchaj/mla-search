@@ -4,9 +4,11 @@ import { RootObject } from "./SharedObjects"
 
 export default function useFetchfromApi(zipcode : string) {
     const [searchResult, setSearchResult] = useState<RootObject[]>();
+    const [errorMessage, setErrorMessage] = useState<string>();
     const [loadingMessage, setLoadingMessage] = useState<string>();
 
     useEffect(()=>{
+        setErrorMessage("");
         const controller = new AbortController();
         const signal = controller.signal;
         if (zipcode.length === 6){
@@ -28,9 +30,11 @@ export default function useFetchfromApi(zipcode : string) {
             .then(function (response) {
                 setSearchResult(response.data.representatives_centroid);
             })
-            .catch(function (error) {console.log(error);})   
+            .catch(function (error) {
+                setErrorMessage(error.message + " or incorrect ZIP code");
+            })   
             .finally(function(){setLoadingMessage("");})
     }
 
-    return {searchResult, loadingMessage}
+    return {searchResult, loadingMessage, errorMessage}
 }

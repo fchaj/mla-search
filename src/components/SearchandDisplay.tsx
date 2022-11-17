@@ -10,11 +10,11 @@ export function SearchandDisplay(){
     return(
         <>
             <p className="font-normal text-gray-700 dark:text-gray-400 m-4">Find Your MLA</p>
-            <input type="text" defaultValue={zipcode} id="zipinput" className="m-4" onChange={e => {setZipcode(e.target.value);}}/>
+            <input type="text" id="zipinput" className="m-4" onChange={e => {setZipcode(e.target.value);}}/>
             {!searchResult ? <p className="font-normal text-gray-700 dark:text-gray-400 m-4">{"Enter a Valid Postal Code"}</p> : null}
             <p className="font-normal text-gray-700 dark:text-gray-400 m-4">{loadingMessage}</p>
             <p className="font-normal text-gray-700 dark:text-gray-400 m-4">{errorMessage}</p>
-            {searchResult ? searchResult.map((item: RootObject) => (MLADisplay(item))) : null}
+            {searchResult ? searchResult.filter((item : RootObject) => item.elected_office === "MLA" || item.elected_office === "MPP").map((item: RootObject) => (MLADisplay(item))) : null}
         </>
     )
 }
